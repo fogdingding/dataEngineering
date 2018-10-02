@@ -224,5 +224,16 @@ func setCompareFunc(leftCmpStr string, rightCmpStr string) bool {
 		return len(leftCmpStr) <= len(rightCmpStr)
 	} else {
 		return leftCmpStr <= rightCmpStr
+	}z
+}
+
+// Handling rsort argument --parallel (set concurrent units)
+func getSyncUnits() int {
+	idx := checkArgsExist("--parallel")
+	if idx != -1 {
+		units, _ := strconv.Atoi(os.Args[idx+1])
+		return units
+	} else {
+		return 0
 	}
 }
