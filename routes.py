@@ -1,5 +1,5 @@
 from flask import Flask, jsonify, render_template, request, url_for
-from app import app
+from dataEngineering import app
 
 @app.route('/')
 @app.route('/index')
