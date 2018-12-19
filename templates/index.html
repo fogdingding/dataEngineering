@@ -28,7 +28,7 @@
                 <img src="{{ url_for('static', filename='images/img-03.png')}}" alt="IMG">
             </div>
             <div style="text-align:center; width:500px;line-height:100px;"class="wrap-input1 validate-input" data-validate = "Name is required">
-                <input align="center" class="input1" type="text" name="search" placeholder="search">
+                <input align="center" class="input1" type="text" id="search" name="search" placeholder="search" onkeypress="return runScript(event)">
                 <span class="shadow-input1"></span>
             </div>
         </div>
@@ -42,6 +42,16 @@
     <!--===============================================================================================-->
         <script src="{{ url_for('static', filename='vendor/tilt/tilt.jquery.min.js')}}"></script>
         <script >
+            var input = document.getElementById("search");
+            input.addEventListener("keyup", function(event) {
+                event.preventDefault();
+                if (event.keyCode === 13) {
+                    var search_text = document.getElementById('search');
+                    var search_text = search_text.value;
+                    window.open("search/"+search_text);
+                }
+            });
+
             $('.js-tilt').tilt({
                 scale: 1.1
             })
