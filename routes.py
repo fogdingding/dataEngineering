@@ -4,8 +4,7 @@ from app import app
 @app.route('/')
 @app.route('/index')
 def index():
-    subject = {'subject': '資料工程'}
-    return render_template('index.html' , title='資料工程', subject=subject)
+   return render_template('index.html' , title='資料工程')
 
 @app.route('/search')
 def add_numbers():
