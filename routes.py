@@ -25,6 +25,41 @@ def save_image(stock):
    fig = ax.get_figure()
    fig.savefig('./data/'+stock+'.png')
 
+#這邊為boyer_moore的演算法 字串比對。
+def string_match_boyer_moore(string,match,start=0):
+    string_len = len(string)
+    match_len  = len(match)
+    end = match_len - 1
+    if string_len < match_len:
+        return start
+    while string[end] == match[end]:
+        end -= 1
+        if end == 0:
+            return ('yes')
+    idx = contain_char(match,string[end])
+    shift = match_len
+    if idx > -1:
+        shift = end - idx
+    start += shift
+    string_match_boyer_moore(string[shift:],match,start)
+
+#這邊負責計算字元相等否。
+def contain_char(s,c):
+   for i in range(len(s)):
+      if c == s[i]:
+          return i
+   return -1
+
+#這邊負責呼叫grep函數
+def grep(file_path,match_string):
+    app=[]
+    with open(file_path,encoding="utf-8") as f_ssv:
+        for line in f_ssv:
+            line_string = line
+            if (string_match_boyer_moore(line_string,match_string) == 'yes'):
+                app.append(line.strip())
+    return app
+
 @app.route('/')
 # 這邊為主畫面
 @app.route('/index')
@@ -35,14 +70,9 @@ def index():
 #這邊為搜尋完的頁面
 @app.route('/search/<search_text>')
 def search(search_text):
-   #gerp內建搜尋函數
-   search_string = 'grep '+search_text+' .\data\output.ssv'
-   #這邊使用系統指令，並從中取出系統印出之字串
-   proc=Popen(search_string, shell=True, stdout=PIPE, )
-   output=proc.communicate()[0]
-   #字串處理
-   output_list = output.decode('utf-8').split("\n")
-   return render_template('search.html',search_text=output_list)
+   #這邊為自製的grep
+   output_list = grep('.\data\output.ssv',search_text)
+   return render_template('search.html',search_text = output_list)
 
 #這邊為把圖片轉成base64傳到前端
 @app.route('/image/<id>')
