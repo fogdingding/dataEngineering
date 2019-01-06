@@ -34,13 +34,7 @@ def search(search_text):
    output=proc.communicate()[0]
    #字串處理
    output_list = output.decode('utf-8').split("\n")
-   #測試用
-   with open('1101.tw.png','rb') as img_f:
-      img_stream = img_f.read()
-      img_stream = base64.b64encode(img_stream)
-      img_stream = str(img_stream,'utf8')
-   #測試用
-   return render_template('search.html',search_text=output_list,img_stream=img_stream)
+   return render_template('search.html',search_text=output_list)
 
 @app.route('/image/<id>')
 def get_image(id):
